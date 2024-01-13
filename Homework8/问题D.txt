@@ -1,0 +1,104 @@
+问题 D: 群体对象_TreeMap
+
+问题描述：
+定义下述5个类(这5个类与前边的作业的要求一致，可以直接拿来用)
+其中SalaridEmployee, HourlyEmployee, CommisionEmployee 继承自Employee，
+basePlusCommisionEmployee继承自 CommisionEmployee。
+类属性如下：
+Employee: firstName,lastName,socialSecurityNumber
+SalaridEmployee: weeklySalary(周薪）
+HourlyEmployee: wage(每小时的工钱),hours（月工作小时数）
+CommisionEmployee: grossSales(销售额),commissionRate(提成比率)
+basePlusCommisionEmployee: baseSalary（月基本工资）
+
+Employee类中定义了抽象方法earning，用于计算员工的月工资。
+SalaridEmployee月工资计算为：weeklySalary*4
+HourlyEmployee月工资计算为：wage*hours
+CommisionEmployee月工资计算为：grossSales*commissionRate
+basePlusCommisionEmployee月工资计算为：grossSales*commissionRate+baseSalary
+类还应该包括构造方法，toString方法，属性的get/set方法。
+firstName,lastName,socialSecurityNumber的初始化在构造方法中完成。
+其中对firstName,lastName也要提供get/set方法，对socialSecurityNumber只提供get方法。
+其他属性要提供get和set方法。
+
+定义EmployeeException类，该类继承自Exception，至少包含code 和 message两个属性，
+分别代表错误码和错误信息。
+
+定义类factory，该类有私有属性employees，类型为TreeMap。
+完成下述功能： 
+1） 定义方法Employee getEmployee( String empSecNum)，
+用于查找并返回社会保险号为empSecNum的员工，若未找到该员工，
+则抛出EmployeeException异常，其中错误码为1004,错误信息为"employee not found.", 
+否则根据返回的员工对象的引用。
+2） 定义方法Employee deleteEmployee(String empSecNum),
+用于从TreeMap中删除社会保险号为empSecNum的员工，并返回该员工对象的引用。
+若未找到该员工，则抛出EmployeeException异常，其中错误码为1002,错误信息为"employee not found."。
+3） 定义方法Employee addEmployee(Employee emp),用于添加参数定义的员工对象到TreeMap中。
+如果此员工已经存在，则抛出EmployeeException异常，其中错误码为1001,错误信息为"employee exists." 。否则返回该员工对象的引用。
+4） 定义方法Employee updateEmployee(String empSecNum ,Employee emp),
+用于更新员工集合中社会保险号为empSecNum的员工对象信息，更新后的信息为emp。
+如果不存在该员工，抛出EmployeeException异常，其中错误码为1003,
+错误信息为"employee not found." 否则返回emp。
+5） 定义方法void printEmployees()，用于输出每一个员工的信息。
+
+
+用以上各类完成下述功能。
+
+输入：
+为若干行，每行代表一个操作。每行的格式为：第一个字符串为操作命令，其中：
+get 对应getEmployee方法。
+add 对应addEmployee方法。
+update对应updateEmployee方法。
+delete对应deleteEmployee方法
+print 对应printEmployees方法。
+exit表示程序结束。
+
+add和update的后续格式为一个雇员的信息（具体见样例）：其中0表示SalaridEmployee，1表示HourlyEmployee，2表示CommissionEmployee，3表示basePlusCommisionEmployee。紧跟着的三个字符串依次代表firstName,lastName,socialSecurityNumber。后边的数字，如果是SalaridEmployee则代表周薪，如果是HourlyEmployee，则依次代表wage,hours，如果是CommissionEmployee则依次代表grossSales,commissionRate，如果是basePlusCommisionEmployee则依次代表grossSales，commissionRate，baseSalary。
+
+
+get和delete的后续格式为雇员的社会保险号（具体见样例）。
+print与exit没有后续输入。
+
+输出：
+print操作，依次输出TreeMap全部雇员信息（格式见样例）。
+其他操作，如果发生异常，则输出错误代码和错误信息（格式见样例），否则，输出对应方法返回的雇员信息（格式见样例）。
+
+样例输入：
+add 0 Ai Meng 2012673901 4312
+add 1 NanXiong Qimu 2016782340 15.2 200
+add 2 Guo Yang 2017672347 46781.3 0.1
+add 3 Rong Huang 2018768901 7854.4 0.28 7098
+get 2016782340
+delete 2018768901
+update 2 Guo Yang 2017672347 46780 0.1
+get 2016782345
+delete 20187890
+print
+exit
+
+样例输出：
+firstName:Ai; lastName:Meng; socialSecurityNumber:2012673901; earning:17248.00
+firstName:NanXiong; lastName:Qimu; socialSecurityNumber:2016782340; earning:3040.00
+firstName:Guo; lastName:Yang; socialSecurityNumber:2017672347; earning:4678.13
+firstName:Rong; lastName:Huang; socialSecurityNumber:2018768901; earning:9297.23
+firstName:NanXiong; lastName:Qimu; socialSecurityNumber:2016782340; earning:3040.00
+firstName:Rong; lastName:Huang; socialSecurityNumber:2018768901; earning:9297.23
+firstName:Guo; lastName:Yang; socialSecurityNumber:2017672347; earning:4678.00
+1004
+employee not found.
+1002
+employee not found.
+firstName:Ai; lastName:Meng; socialSecurityNumber:2012673901; earning:17248.00
+firstName:NanXiong; lastName:Qimu; socialSecurityNumber:2016782340; earning:3040.00
+firstName:Guo; lastName:Yang; socialSecurityNumber:2017672347; earning:4678.00
+
+
+调试：
+1.异常输出有问题：
+employee not found. code:1004
+应该是：
+1004
+employee not found.
+问题解决：改变捕获异常时的输出样式。
+2.earning属性输出是三位小数或一位小数，而不是两位小数
+问题解决：采用格式化输出
